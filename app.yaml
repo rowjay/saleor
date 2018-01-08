@@ -1,3 +1,6 @@
+service:
+  saleor
+
 runtime: python
 env: flex
 entrypoint: uwsgi --ini saleor/wsgi/uwsgi.ini
@@ -6,7 +9,7 @@ runtime_config:
   python_version: 3
 
 beta_settings:
-  cloud_sql_instances: ${SQL_STRING}
+  cloud_sql_instances: ''
 
 skip_files:
   - Dockerfile
@@ -15,25 +18,31 @@ skip_files:
   - docs/
   - static/
   - saleor/static/assets
+  - myapp.yaml
   - ^(.*/)?\.css$
   - ^(.*/)?\.log$
   - ^(.*/)?\.pot$
   - ^(.*/)?\.pyc$
 
 env_variables:
-  REDIS_URL: ${REDIS_URL}
-  DATABASE_URL: ${DATABASE_URL}
-  DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL}
-  EMAIL_URL: ${EMAIL_URL}
-  OPENEXCHANGERATES_API_KEY: ${OPENEXCHANGERATES_API_KEY}
-  SECRET_KEY: ${SECRET_KEY}
-  STATIC_URL: ${STATIC_URL}
-  GOOGLE_ANALYTICS_TRACKING_ID: ${GOOGLE_ANALYTICS_TRACKING_ID}
-  STRIPE_SK: ${STRIPE_SK}
-  STRIPE_PK: ${STRIPE_PK}
-  MAX_CART_LINE_QUANTITY: ${MAX_CART_LINE_QUANTITY}
+  REDIS_URL: ''
+  DATABASE_URL: ''
+  DEFAULT_FROM_EMAIL: ''
+  EMAIL_URL: ''
+  OPENEXCHANGERATES_API_KEY: ''
+  SECRET_KEY: ''
+  STATIC_URL: ''
+  GOOGLE_ANALYTICS_TRACKING_ID: ''
+  STRIPE_SK: ''
+  STRIPE_PK: ''
   ALLOWED_HOSTS: '*'
-  DEBUG: 'False'
+  DEBUG: True
+  ADMIN_EMAIL: ''
+  TIMEZONE: ''
+  DEFAULT_COUNTRY: ''
+  DEFAULT_CURRENCY: ''
+  SQL_STRING:
+  DB_NAME:
 
 manual_scaling:
   instances: 1

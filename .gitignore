@@ -28,3 +28,5 @@ dist/
 /static/
 /saleor/static/assets/
 webpack-bundle.json
+myapp.yaml
+.env
