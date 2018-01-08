@@ -22,7 +22,7 @@ ROOT_URLCONF = 'saleor.urls'
 WSGI_APPLICATION = 'saleor.wsgi.application'
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Admin', os.environ.get('ADMIN_EMAIL')),
 )
 MANAGERS = ADMINS
 
@@ -40,8 +40,14 @@ DATABASES = {
         default='postgres://saleor:saleor@localhost:5432/saleor',
         conn_max_age=600)}
 
+DATABASES['default']['HOST'] = '/cloudsql/{}'.format(os.environ.get('SQL_STRING'))
+DATABASES['default']['NAME'] = os.environ.get('DB_NAME')
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
 
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = os.environ.get('TIMEZONE', 'Australia/Sydney')
 LANGUAGE_CODE = 'en-us'
 LOCALE_PATHS = [os.path.join(PROJECT_ROOT, 'locale')]
 USE_I18N = True
@@ -248,8 +254,8 @@ AUTH_USER_MODEL = 'userprofile.User'
 
 LOGIN_URL = '/account/login/'
 
-DEFAULT_COUNTRY = 'US'
-DEFAULT_CURRENCY = 'USD'
+DEFAULT_COUNTRY = os.environ.get('DEFAULT_COUNTRY', 'US')
+DEFAULT_CURRENCY = os.environ.get('DEFAULT_CURRENCY', 'USD')
 AVAILABLE_CURRENCIES = [DEFAULT_CURRENCY]
 
 OPENEXCHANGERATES_API_KEY = os.environ.get('OPENEXCHANGERATES_API_KEY')
@@ -273,11 +279,19 @@ PAYMENT_MODEL = 'order.Payment'
 PAYMENT_VARIANTS = {
     'default': ('payments.dummy.DummyProvider', {})}
 
+PAYMENT_VARIANTS = {
+    'default': ('payments.dummy.DummyProvider', {}),
+    'stripe': ('payments.stripe.StripeProvider', {
+        'secret_key': os.environ.get('STRIPE_SK'),
+        'public_key': os.environ.get('STRIPE_PK')})
+}
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 CHECKOUT_PAYMENT_CHOICES = [
-    ('default', 'Dummy provider')]
+    ('default', 'Dummy provider'),
+    ('stripe', 'Stripe payments')]
 
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'}

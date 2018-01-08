@@ -1,0 +1,53 @@
+service:
+  saleor
+
+runtime: python
+env: flex
+entrypoint: uwsgi --ini saleor/wsgi/uwsgi.ini
+
+runtime_config:
+  python_version: 3
+
+beta_settings:
+  cloud_sql_instances: ''
+
+skip_files:
+  - Dockerfile
+  - media/
+  - node_modules/
+  - docs/
+  - static/
+  - saleor/static/assets
+  - myapp.yaml
+  - ^(.*/)?\.css$
+  - ^(.*/)?\.log$
+  - ^(.*/)?\.pot$
+  - ^(.*/)?\.pyc$
+
+env_variables:
+  REDIS_URL: ''
+  DATABASE_URL: ''
+  DEFAULT_FROM_EMAIL: ''
+  EMAIL_URL: ''
+  OPENEXCHANGERATES_API_KEY: ''
+  SECRET_KEY: ''
+  STATIC_URL: ''
+  GOOGLE_ANALYTICS_TRACKING_ID: ''
+  STRIPE_SK: ''
+  STRIPE_PK: ''
+  ALLOWED_HOSTS: '*'
+  DEBUG: True
+  ADMIN_EMAIL: ''
+  TIMEZONE: ''
+  DEFAULT_COUNTRY: ''
+  DEFAULT_CURRENCY: ''
+  SQL_STRING: ''
+  DB_NAME: ''
+
+manual_scaling:
+  instances: 1
+
+resources:
+  cpu: 1
+  memory_gb: 0.6
+  disk_size_gb: 10
