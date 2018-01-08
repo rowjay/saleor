@@ -41,8 +41,8 @@ env_variables:
   TIMEZONE: ''
   DEFAULT_COUNTRY: ''
   DEFAULT_CURRENCY: ''
-  SQL_STRING:
-  DB_NAME:
+  SQL_STRING: ''
+  DB_NAME: ''
 
 manual_scaling:
   instances: 1
